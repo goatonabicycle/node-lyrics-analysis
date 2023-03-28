@@ -4,11 +4,12 @@
 
 const fetch = require("node-fetch");
 const cheerio = require("cheerio");
+var config = require("../config.json");
 
 module.exports = class GeniusAPI {
-  constructor(accessToken) {
-    if (!accessToken) throw new Error("No access token provided!");
-    this.accessToken = accessToken;
+  constructor() {
+    const geniusAPIKey = config.GeniuAPIkey;
+    this.accessToken = geniusAPIKey;
   }
 
   /*
@@ -40,20 +41,16 @@ module.exports = class GeniusAPI {
   Get song by ID
   */
 
-  async song(id, {
-    fetchLyrics = false,
-    textFormat = "dom"
-  } = {}) {
+  async song(id, { fetchLyrics = false, textFormat = "dom" } = {}) {
     if (!id) throw new Error("No ID was provided to lyricist.song()");
 
     const path = `songs/${id}?text_format=${textFormat}`;
-    const {
-      song
-    } = await this._request(path);
+    const { song } = await this._request(path);
 
     const lyrics = fetchLyrics ? await this._scrapeLyrics(song.url) : null;
 
-    return Object.assign({
+    return Object.assign(
+      {
         lyrics,
       },
       song
@@ -64,22 +61,18 @@ module.exports = class GeniusAPI {
   Get album by ID
   */
 
-  async album(id, {
-    fetchTracklist = false,
-    textFormat = "dom"
-  } = {}) {
+  async album(id, { fetchTracklist = false, textFormat = "dom" } = {}) {
     if (!id) throw new Error("No ID was provided to lyricist.album()");
 
     const path = `albums/${id}?text_format=${textFormat}`;
-    const {
-      album
-    } = await this._request(path);
+    const { album } = await this._request(path);
 
-    const tracklist = fetchTracklist ?
-      await this._scrapeTracklist(album.url) :
-      null;
+    const tracklist = fetchTracklist
+      ? await this._scrapeTracklist(album.url)
+      : null;
 
-    return Object.assign({
+    return Object.assign(
+      {
         tracklist,
       },
       album
@@ -117,15 +110,11 @@ module.exports = class GeniusAPI {
 
   /* Get artist by ID */
 
-  async artist(id, {
-    textFormat = "dom"
-  } = {}) {
+  async artist(id, { textFormat = "dom" } = {}) {
     if (!id) throw new Error("No ID was provided to lyricist.artist()");
 
     const path = `artists/${id}?text_format=${textFormat}`;
-    const {
-      artist
-    } = await this._request(path);
+    const { artist } = await this._request(path);
     return artist;
   }
 
@@ -142,19 +131,38 @@ module.exports = class GeniusAPI {
 
   /* Get artist songs */
 
-  async songsByArtist(id, {
-    page = 1,
-    perPage = 20,
-    sort = "title"
-  } = {}) {
+  async songsByArtist(id, { page = 1, perPage = 20, sort = "title" } = {}) {
     if (!id) throw new Error("No ID was provided to lyricist.songsByArtist()");
 
-    const path = `artists/${id}/songs?per_page=${perPage}&page=${page}&sort=${sort}`;
-    const {
-      songs
-    } = await this._request(path);
+    let allSongs = [];
+    let currentPage = page;
+    const maxPages = 50;
+    let numPages = 0;
 
-    return songs;
+    while (numPages < maxPages) {
+      const path = `artists/${id}/songs?per_page=${perPage}&page=${currentPage}&sort=${sort}`;
+      const { songs } = await this._request(path);
+
+      if (songs.length === 0) {
+        break; // no more songs, exit the loop
+      }
+
+      allSongs = allSongs.concat(
+        songs.map((song) => ({
+          id: song.id,
+          title: song.title,
+        }))
+      );
+
+      if (songs.length < perPage) {
+        break; // we have less than a full page of songs
+      }
+
+      currentPage++;
+      numPages++;
+    }
+
+    return allSongs;
   }
 
   /* Search (for songs) */
@@ -176,15 +184,8 @@ module.exports = class GeniusAPI {
     const json = $('meta[itemprop="page_data"]').attr("content");
     const parsed = JSON.parse(json);
     const songs = parsed.album_appearances;
-    return songs.map(({
-        song,
-        track_number
-      }) =>
-      Object.assign({
-          track_number,
-        },
-        song
-      )
+    return songs.map(({ song, track_number }) =>
+      Object.assign({ track_number }, song)
     );
   }
 
