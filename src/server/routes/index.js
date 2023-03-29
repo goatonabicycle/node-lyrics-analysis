@@ -8,6 +8,8 @@ const { constructWordUsageTable } = require("../lib/wordUsageMap");
 const GeniusAPI = require("../api/lyricistGeniusAPI");
 const geniusAPI = new GeniusAPI();
 
+const { getAllSongsForArtist } = require("../lib/songs");
+
 /* GET home page. */
 router.get("/", async function (req, res, next) {
   const result = {};
@@ -18,19 +20,18 @@ router.get("/getAllAlbumsForArtist", async function (req, res, next) {
   const artistId = 178; // todo: This is Aesop Rock's id. We might have some sort of get id from string functionality
   const artistName = "Aesop Rock";
 
-  //See if a file for Aesop Rock exists.
-  const fileExists = await readFile(`data/${artistName}/~songs.json`);
-  if (fileExists) {
-    const songsForArtist = JSON.parse(fileExists);
-    result.songsForArtist = songsForArtist;
-    res.render("index", result);
-    return;
-  }
+  const songsForArtist = await getAllSongsForArtist(artistName, artistId);
 
-  const songsForArtist = await geniusAPI.songsByArtist(artistId);
-  // Write songsForArtist to a file
-  await writeFile("data/AllAesopSongs", JSON.stringify(songsForArtist));
+  // for each song in songsForArtist we need to first make a "Song details" call.
+  // const songDetails = await Promise.all(
+  //   songsForArtist.map(async (song) => {
+  //     const songDetail = await geniusAPI.song(song.id);
 
+  //   })
+  // );
+
+  // Todo: Now that we have all the songs for the artist, we can construct the table in order to determine all the albums.
+  let result = "";
   res.render("index", result);
 });
 
@@ -66,6 +67,7 @@ router.get("/scrape", async function (req, res, next) {
 });
 
 module.exports = router;
+
 async function getAlbumData(albumId, artistName) {
   const album = await geniusAPI.album(albumId, {
     fetchTracklist: true,

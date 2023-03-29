@@ -1,6 +1,5 @@
-// https://github.com/scf4/lyricist
-// Used the above. Made some alterations to allow for consistent scraping of lyrics
-// The original project only worked some of the time, I assume it's because of Genius changing some things.
+// This file originally came from: https://github.com/scf4/lyricist
+// I've needed to make many alterations though.
 
 const fetch = require("node-fetch");
 const cheerio = require("cheerio");

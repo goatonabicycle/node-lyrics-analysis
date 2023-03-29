@@ -24,8 +24,8 @@ describe("songs", () => {
 
     test("A mocked endpoint returns an array of songs", async () => {
       let testData = createAMockedSongStructure([
-        { id: "1", title: "Song 1" },
-        { id: "2", title: "Song 2" },
+        { id: 1, title: "Song 1" },
+        { id: 2, title: "Song 2" },
       ]);
 
       fetch.mockResponse(testData);
@@ -35,7 +35,7 @@ describe("songs", () => {
       const result = await getAllSongsForArtist(artistName, artistId);
 
       expect(result.songData.length).toBeGreaterThan(0);
-      expect(result.songData[0].title).toBe("Song 1");
+      expect(result.songData[0].id).toBe(1);
       expect(result.songData[1].title).toBe("Song 2");
     });
 
@@ -65,5 +65,8 @@ describe("songs", () => {
       expect(result.songData[0].title).toBe("Song 1");
       expect(result.songData[30].title).toBe("Song 31");
     });
+
+    test("Albums can be returned for a specific artist.", async () => {});
+    test("Albums have their correct tracklistings", async () => {});
   });
 });

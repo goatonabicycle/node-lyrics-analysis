@@ -1,6 +1,7 @@
 const { readFile, writeFile } = require("./utils/files");
 const GeniusAPI = require("../api/lyricistGeniusAPI");
 
+// Unfortunately, the Genius API doesn't have a way to get album information without calling a "song detail" endpoint.
 async function getAllSongsForArtist(artistName, artistId) {
   if (!artistName) return;
   if (!artistId) return;
