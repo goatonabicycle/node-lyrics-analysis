@@ -16,7 +16,7 @@ module.exports.readFile = (filename) => {
     return fs.readFileSync(filename, "utf8");
   } catch (err) {
     if (err.code === "ENOENT") {
-      console.log(`File ${filename} was not found.`);
+      console.info(`File ${filename} was not found.`);
     } else {
       throw err;
     }

@@ -5,9 +5,10 @@ async function getAllSongsForArtist(artistName, artistId) {
   if (!artistName) return;
   if (!artistId) return;
 
-  const fileExists = await readFile(`data/${artistName}/~songs.json`);
-  if (fileExists) {
-    const songsForArtist = JSON.parse(fileExists);
+  // Todo: Maybe this could be done in a more elegant way. SQLite?
+  const dataAvailable = await readFile(`data/${artistName}/~songs.json`);
+  if (dataAvailable) {
+    const songsForArtist = JSON.parse(dataAvailable);
     return songsForArtist;
   }
 

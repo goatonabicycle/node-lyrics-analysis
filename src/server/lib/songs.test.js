@@ -11,14 +11,6 @@ function createAMockedSongStructure(songData) {
   return mockedData;
 }
 
-function createTestDataItems(numberOfItems) {
-  let songData = [];
-  for (let i = 1; i <= numberOfItems; i++) {
-    songData.push({ id: i, title: `Song ${i}` });
-  }
-  return songData;
-}
-
 describe("songs", () => {
   describe("getAllSongsForArtist", () => {
     beforeEach(() => {
@@ -48,13 +40,22 @@ describe("songs", () => {
     });
 
     test("When there are more than 20 songs, we get songs from the next page.", async () => {
-      let songSet1 = createTestDataItems(25);
-      let songSet2 = createTestDataItems(5);
+      let songData = [];
+
+      for (let i = 1; i <= 35; i++) {
+        songData.push({ id: i, title: `Song ${i}` });
+      }
+
+      const songSet1 = songData.slice(0, 20);
+      const songSet2 = songData.slice(20);
 
       let mockedData1 = createAMockedSongStructure(songSet1);
       let mockedData2 = createAMockedSongStructure(songSet2);
 
-      fetch.mockResponses([mockedData1, mockedData2]);
+      fetch.mockResponses(
+        [mockedData1, { status: 200 }],
+        [mockedData2, { status: 200 }]
+      );
 
       const artistId = 111;
       const artistName = "This is Mocked so it's cool!";
@@ -62,7 +63,7 @@ describe("songs", () => {
 
       expect(result.songData.length).toBeGreaterThan(0);
       expect(result.songData[0].title).toBe("Song 1");
-      expect(result.songData[20].title).toBe("Song 21");
+      expect(result.songData[30].title).toBe("Song 31");
     });
   });
 });
