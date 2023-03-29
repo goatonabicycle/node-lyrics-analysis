@@ -8,7 +8,7 @@ var config = require("../config.json");
 
 module.exports = class GeniusAPI {
   constructor() {
-    const geniusAPIKey = config.GeniuAPIkey;
+    const geniusAPIKey = config.GeniusAPIkey;
     this.accessToken = geniusAPIKey;
   }
 
@@ -26,7 +26,11 @@ module.exports = class GeniusAPI {
     const body = await fetch(url, {
       headers,
     });
+
     const result = await body.json();
+
+    console.log("Fetch response");
+    console.log({ result });
 
     // Handle errors
     if (result.error)
@@ -140,6 +144,7 @@ module.exports = class GeniusAPI {
     let numPages = 0;
 
     while (numPages < maxPages) {
+      console.log(`Fetching page ${currentPage}`);
       const path = `artists/${id}/songs?per_page=${perPage}&page=${currentPage}&sort=${sort}`;
       const { songs } = await this._request(path);
 
@@ -162,6 +167,7 @@ module.exports = class GeniusAPI {
       numPages++;
     }
 
+    console.log(allSongs);
     return allSongs;
   }
 
