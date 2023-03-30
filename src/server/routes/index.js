@@ -23,12 +23,6 @@ router.get("/getAllAlbumsForArtist", async function (req, res, next) {
   const songsForArtist = await getAllSongsForArtist(artistName, artistId);
 
   // for each song in songsForArtist we need to first make a "Song details" call.
-  // const songDetails = await Promise.all(
-  //   songsForArtist.map(async (song) => {
-  //     const songDetail = await geniusAPI.song(song.id);
-
-  //   })
-  // );
 
   // Todo: Now that we have all the songs for the artist, we can construct the table in order to determine all the albums.
   let result = "";
