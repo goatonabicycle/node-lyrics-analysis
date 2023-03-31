@@ -1,6 +1,8 @@
 const { readFile, writeFile } = require("./utils/files");
 const GeniusAPI = require("../api/lyricistGeniusAPI");
 
+const geniusAPI = new GeniusAPI();
+
 // Unfortunately, the Genius API doesn't have a way to get album information without calling a "song detail" endpoint.
 async function getAllSongsForArtist(artistName, artistId) {
   if (!artistName) return;
@@ -13,7 +15,6 @@ async function getAllSongsForArtist(artistName, artistId) {
     return songsForArtist;
   }
 
-  const geniusAPI = new GeniusAPI();
   const songsForArtist = await geniusAPI.songsByArtist(artistId);
 
   // Write songsForArtist to a file
@@ -22,6 +23,12 @@ async function getAllSongsForArtist(artistName, artistId) {
   return { songData: songsForArtist };
 }
 
+async function getSongInfo(songId) {
+  const songInformation = await geniusAPI.song(songId);
+  return songInformation;
+}
+
 module.exports = {
   getAllSongsForArtist,
+  getSongInfo,
 };

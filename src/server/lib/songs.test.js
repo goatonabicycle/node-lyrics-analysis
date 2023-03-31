@@ -1,32 +1,30 @@
-const { getAllSongsForArtist } = require("./songs");
+const { getAllSongsForArtist, getSongInfo } = require("./songs");
 
-function createAMockedSongStructure(songData) {
+function createAMockedResponseStructure(responseData) {
   let mockedData = JSON.stringify({
     meta: { status: 200 },
-    response: {
-      songs: songData,
-    },
+    response: responseData,
   });
 
   return mockedData;
 }
 
 describe("songs", () => {
-  describe("getAllSongsForArtist", () => {
-    beforeEach(() => {
-      fetch.resetMocks();
-    });
+  beforeEach(() => {});
 
+  describe("getAllSongsForArtist", () => {
     test("Not providing info returns nothing", async () => {
       const result = await getAllSongsForArtist();
       expect(result).toBe(undefined);
     });
 
     test("A mocked endpoint returns an array of songs", async () => {
-      let testData = createAMockedSongStructure([
-        { id: 1, title: "Song 1" },
-        { id: 2, title: "Song 2" },
-      ]);
+      let testData = createAMockedResponseStructure({
+        songs: [
+          { id: 1, title: "Song 1" },
+          { id: 2, title: "Song 2" },
+        ],
+      });
 
       fetch.mockResponse(testData);
 
@@ -49,8 +47,12 @@ describe("songs", () => {
       const songSet1 = songData.slice(0, 20);
       const songSet2 = songData.slice(20);
 
-      let mockedData1 = createAMockedSongStructure(songSet1);
-      let mockedData2 = createAMockedSongStructure(songSet2);
+      let mockedData1 = createAMockedResponseStructure({
+        songs: songSet1,
+      });
+      let mockedData2 = createAMockedResponseStructure({
+        songs: songSet2,
+      });
 
       fetch.mockResponses(
         [mockedData1, { status: 200 }],
@@ -65,8 +67,26 @@ describe("songs", () => {
       expect(result.songData[0].title).toBe("Song 1");
       expect(result.songData[30].title).toBe("Song 31");
     });
-
-    test("Albums can be returned for a specific artist.", async () => {});
-    test("Albums have their correct tracklistings", async () => {});
   });
+
+  describe("getSongById", () => {
+    test("Not providing info returns nothing", async () => {});
+
+    test("Song details are accessible", async () => {
+      //fetch.dontMockOnce();
+      let testData = createAMockedResponseStructure({
+        song: { id: 3617, title: "Song 1", album: { id: 256 } },
+      });
+
+      fetch.mockResponse(testData);
+
+      let songId = 3617; // Daylight by Aesop Rock
+      let songInfo = await getSongInfo(songId);
+      expect(songInfo.id).toBe(songId);
+      expect(songInfo.album.id).toBe(256);
+    });
+  });
+
+  test("Albums can be returned for a specific artist.", async () => {});
+  test("Albums have their correct tracklistings", async () => {});
 });
