@@ -10,7 +10,9 @@ function createAMockedResponseStructure(responseData) {
 }
 
 describe("songs", () => {
-  beforeEach(() => {});
+  beforeEach(() => {
+    fetch.resetMocks();
+  });
 
   describe("getAllSongsForArtist", () => {
     test("Not providing info returns nothing", async () => {
@@ -73,17 +75,19 @@ describe("songs", () => {
     test("Not providing info returns nothing", async () => {});
 
     test("Song details are accessible", async () => {
-      //fetch.dontMockOnce();
+      let songId = 99999;
+      let albumId = 88888;
+
       let testData = createAMockedResponseStructure({
-        song: { id: 3617, title: "Song 1", album: { id: 256 } },
+        song: { id: songId, title: "Song 1", album: { id: albumId } },
       });
 
       fetch.mockResponse(testData);
 
-      let songId = 3617; // Daylight by Aesop Rock
       let songInfo = await getSongInfo(songId);
+
       expect(songInfo.id).toBe(songId);
-      expect(songInfo.album.id).toBe(256);
+      expect(songInfo.album.id).toBe(albumId);
     });
   });
 

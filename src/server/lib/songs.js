@@ -18,8 +18,9 @@ async function getAllSongsForArtist(artistName, artistId) {
   const songsForArtist = await geniusAPI.songsByArtist(artistId);
 
   // Write songsForArtist to a file
-  await writeFile("data/AllAesopSongs", JSON.stringify(songsForArtist));
-
+  await writeFile(`data/${artistName}/~songs.json`, {
+    songData: songsForArtist,
+  });
   return { songData: songsForArtist };
 }
 
