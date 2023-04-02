@@ -89,6 +89,8 @@ describe("songs", () => {
       expect(songInfo.id).toBe(songId);
       expect(songInfo.album.id).toBe(albumId);
     });
+
+    test("Song lyrics are accessible", async () => {});
   });
 
   test("Albums can be returned for a specific artist.", async () => {});
