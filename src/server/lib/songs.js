@@ -24,6 +24,8 @@ async function getAllSongsForArtist(artistName, artistId) {
   return { songData: songsForArtist };
 }
 
+function saveSong(songData) {}
+
 async function getSongInfo(songId) {
   const songInformation = await geniusAPI.song(songId);
   return songInformation;
