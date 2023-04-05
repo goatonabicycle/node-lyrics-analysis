@@ -14,6 +14,10 @@ describe("songs", () => {
     fetch.resetMocks();
   });
 
+  afterEach(() => {
+    fetch.resetMocks();
+  });
+
   describe("getAllSongsForArtist", () => {
     test("Not providing info returns nothing", async () => {
       const result = await getAllSongsForArtist();
@@ -40,6 +44,7 @@ describe("songs", () => {
     });
 
     test("When there are more than 20 songs, we get songs from the next page.", async () => {
+      fetch.resetMocks();
       let songData = [];
 
       for (let i = 1; i <= 35; i++) {
@@ -67,6 +72,7 @@ describe("songs", () => {
 
       expect(result.songData.length).toBeGreaterThan(0);
       expect(result.songData[0].title).toBe("Song 1");
+      console.log(result.songData);
       expect(result.songData[30].title).toBe("Song 31");
     });
   });
