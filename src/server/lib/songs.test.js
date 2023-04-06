@@ -10,11 +10,10 @@ function createAMockedResponseStructure(responseData) {
 }
 
 describe("songs", () => {
-  beforeEach(() => {
-    fetch.resetMocks();
-  });
-
   describe("getAllSongsForArtist", () => {
+    beforeEach(() => {
+      fetch.resetMocks();
+    });
     test("Not providing info returns nothing", async () => {
       const result = await getAllSongsForArtist();
       expect(result).toBe(undefined);
@@ -48,7 +47,6 @@ describe("songs", () => {
 
       expect(result.songData.length).toBeGreaterThan(0);
       expect(result.songData[0].title).toBe("Song 1");
-      console.log(result.songData);
       expect(result.songData[30].title).toBe("Song 31");
     });
   });
