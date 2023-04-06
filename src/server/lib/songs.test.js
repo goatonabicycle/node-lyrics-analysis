@@ -14,6 +14,7 @@ describe("songs", () => {
     beforeEach(() => {
       fetch.resetMocks();
     });
+
     test("Not providing info returns nothing", async () => {
       const result = await getAllSongsForArtist();
       expect(result).toBe(undefined);
@@ -71,6 +72,10 @@ describe("songs", () => {
   });
 
   describe("getSongById", () => {
+    beforeEach(() => {
+      fetch.resetMocks();
+    });
+
     test("Not providing info returns nothing", async () => {});
 
     test("Song details are accessible", async () => {
