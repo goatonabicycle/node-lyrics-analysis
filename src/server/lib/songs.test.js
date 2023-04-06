@@ -10,10 +10,6 @@ function createAMockedResponseStructure(responseData) {
 }
 
 describe("songs", () => {
-  beforeEach(() => {
-    fetch.resetMocks();
-  });
-
   describe("getAllSongsForArtist", () => {
     test("Not providing info returns nothing", async () => {
       const result = await getAllSongsForArtist();
