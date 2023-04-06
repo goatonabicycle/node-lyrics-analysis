@@ -14,10 +14,6 @@ describe("songs", () => {
     fetch.resetMocks();
   });
 
-  afterEach(() => {
-    fetch.resetMocks();
-  });
-
   describe("getAllSongsForArtist", () => {
     test("Not providing info returns nothing", async () => {
       const result = await getAllSongsForArtist();
@@ -32,7 +28,7 @@ describe("songs", () => {
         ],
       });
 
-      fetch.mockResponse(testData);
+      fetch.mockResponseOnce(testData);
 
       const artistId = 111;
       const artistName = "This is Mocked so it's cool!";
@@ -44,7 +40,6 @@ describe("songs", () => {
     });
 
     test("When there are more than 20 songs, we get songs from the next page.", async () => {
-      fetch.resetMocks();
       let songData = [];
 
       for (let i = 1; i <= 35; i++) {
