@@ -4,7 +4,9 @@ const GeniusAPI = require("../api/lyricistGeniusAPI");
 const geniusAPI = new GeniusAPI();
 
 async function getArtistByName(artistName) {
-  return await geniusAPI.artistByName(artistName);
+  let artistId = await geniusAPI.artistByName(artistName);
+  if (artistId) saveArtist({ name: artistName, id: artistId });
+  return artistId;
 }
 
 async function saveArtist(artist) {

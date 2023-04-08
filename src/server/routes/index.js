@@ -9,6 +9,7 @@ const GeniusAPI = require("../api/lyricistGeniusAPI");
 const geniusAPI = new GeniusAPI();
 
 const { getAllSongsForArtist } = require("../lib/songs");
+const { getArtistByName } = require("../lib/artist");
 
 /* GET home page. */
 router.get("/", async function (req, res, next) {
@@ -17,12 +18,32 @@ router.get("/", async function (req, res, next) {
 });
 
 router.get("/getAllAlbumsForArtist", async function (req, res, next) {
-  const artistId = 178; // todo: This is Aesop Rock's id. We might have some sort of get id from string functionality
+  // const artistId = 178; // todo: This is Aesop Rock's id. We might have some sort of get id from string functionality
   const artistName = "Aesop Rock";
+  const artistId = getArtistByName(artistName);
 
-  const songsForArtist = await getAllSongsForArtist(artistName, artistId);
+  // const songsForArtist = await getAllSongsForArtist(artistName, artistId);
+  // console.log(songsForArtist);
+  // const albumIds = [];
 
-  // for each song in songsForArtist we need to first make a "Song details" call.
+  // let limitTo = 5;
+  // let currentItem = 0;
+  // // for each song in songsForArtist we need to first make a "Song details" call.
+  // for (const song of songsForArtist.songData) {
+  //   if (currentItem == limitTo) break;
+
+  //   const songDetail = await geniusAPI.song(song.id, { fetchLyrics: false });
+
+  //   // if the songDetail has an albumId we haven't already seen, add it to the albumIds array
+  //   if (!albumIds.includes(songDetail.album_id)) {
+  //     console.log(`Album getting added: ${songDetail.album_id}`);
+  //     albumIds.push(songDetail.album_id);
+  //   }
+
+  //   currentItem++;
+  // }
+
+  // console.log(albumIds);
 
   // Todo: Now that we have all the songs for the artist, we can construct the table in order to determine all the albums.
   let result = "";
