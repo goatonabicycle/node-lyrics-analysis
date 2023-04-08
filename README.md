@@ -19,7 +19,12 @@ This isn't hosted anywhere yet.
 
 ```
  npm install
- run the `dev` and `ui` scripts from `package.json` (ideally from vscode's "npm Scripts" window)
+ run the `dev` and `ui` scripts from `package.json`.
+```
+
+## How do I run tests? 
+```
+npm test
 ```
 
 ## Notes and ideas
