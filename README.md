@@ -22,7 +22,8 @@ This isn't hosted anywhere yet.
  run the `dev` and `ui` scripts from `package.json`.
 ```
 
-## How do I run tests? 
+## How do I run tests?
+
 ```
 npm test
 ```
@@ -37,3 +38,19 @@ Random ideas.
 - Number of unique words total
 - Graph of top 20 most used words.
 - Most used word! (That isn't "a", "the", "and")
+
+## TODO
+
+- Get the artist id based off of their name.
+- Get all the songs for the artist.
+- Using those song ids, get all the song info.
+- Using that song info, get all the unique albums.
+- Store the song and album information as indexes per artist.
+- Per song, per Album, get the lyrics and the analisys of that song.
+
+Other things:
+
+- Pipeline.
+- A nice readme.
+- An aesthetic. A name.
+-
