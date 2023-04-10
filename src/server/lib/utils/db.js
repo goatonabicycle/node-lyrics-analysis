@@ -2,15 +2,15 @@ const sqlite3 = require("sqlite3").verbose();
 
 const DBSOURCE = "mydatabase.sqlite";
 
-let db = new sqlite3.Database(DBSOURCE, (err) => {
-  if (err) {
-    console.error(err.message);
-    throw err;
-  } else {
-    console.log("Connected to the SQLite database.");
-    createTables();
-  }
-});
+// let db = new sqlite3.Database(DBSOURCE, (err) => {
+//   if (err) {
+//     console.error(err.message);
+//     throw err;
+//   } else {
+//     console.log("Connected to the SQLite database.");
+//     createTables();
+//   }
+// });
 
 // // Create tables if they don't already exist
 function createTables() {
@@ -22,7 +22,6 @@ function createTables() {
     (err) => {
       if (err) {
         console.error(err.message);
-        throw err;
       }
     }
   );
@@ -62,16 +61,16 @@ function createTables() {
 // // ARTISTS
 
 function saveArtist(name) {
-  return new Promise((resolve, reject) => {
-    db.run("INSERT INTO artists (name) VALUES (?)", [name], (err) => {
-      if (err) {
-        console.error(err.message);
-        reject(err);
-      } else {
-        resolve(`Artist ${name} added successfully.`);
-      }
-    });
-  });
+  // return new Promise((resolve, reject) => {
+  //   db.run("INSERT INTO artists (name) VALUES (?)", [name], (err) => {
+  //     if (err) {
+  //       console.error(err.message);
+  //       reject(err);
+  //     } else {
+  //       resolve(`Artist ${name} added successfully.`);
+  //     }
+  //   });
+  // });
 }
 
 // function getArtists() {
