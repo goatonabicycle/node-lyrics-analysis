@@ -28,6 +28,7 @@ async function getAlbumsFromSongs(songs) {
 function saveSong(songData) {}
 
 async function getSongInfo(songId) {
+  // TODO: See if song info is available in the db.
   const songInformation = await geniusAPI.song(songId);
   return songInformation;
 }

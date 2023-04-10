@@ -4,6 +4,9 @@ const GeniusAPI = require("../api/lyricistGeniusAPI");
 const geniusAPI = new GeniusAPI();
 
 async function getArtistByName(artistName) {
+  // TODO: Check if the artist already exists in the database
+    
+
   let artistId = await geniusAPI.artistByName(artistName);
   if (artistId) saveArtist({ name: artistName, id: artistId });
   return artistId;

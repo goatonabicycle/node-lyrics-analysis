@@ -8,7 +8,7 @@ const { constructWordUsageTable } = require("../lib/wordUsageMap");
 const GeniusAPI = require("../api/lyricistGeniusAPI");
 const geniusAPI = new GeniusAPI();
 
-const { getAllSongsForArtist } = require("../lib/songs");
+const { getAllSongsForArtist, getSongInfo } = require("../lib/songs");
 const { getAlbumData } = require("../lib/albums");
 const { getArtistByName } = require("../lib/artist");
 
@@ -19,11 +19,15 @@ router.get("/", async function (req, res, next) {
 });
 
 router.get("/test", async function (req, res, next) {
-  const artistId = 178; // todo: This is Aesop Rock's id. We might have some sort of get id from string functionality
+  // We start with artist stuff.
   const artistName = "Aesop Rock";
+  const artistId = getArtistByName(artistName);
+  // TODO: Store this artist in the database.
 
+  // Then we get all songs for that artist.
   const songsForArtist = await getAllSongsForArtist(artistName, artistId);
-  console.log(songsForArtist);
+  // TODO: Store this song in the database linked to this artist.
+
   const albumIds = [];
 
   let limitTo = 5;
@@ -32,11 +36,10 @@ router.get("/test", async function (req, res, next) {
   for (const song of songsForArtist.songData) {
     if (currentItem == limitTo) break;
 
-    const songDetail = await geniusAPI.song(song.id, { fetchLyrics: false });
+    // Then we get all the information relating to that song.
+    const songDetail = await getSongInfo(song.songId);
 
     if (!songDetail.album) break; // Let's worry about songs without an album later.
-
-    console.log(`songDetail`, songDetail);
 
     // if the songDetail has an albumId we haven't already seen, add it to the albumIds array
     if (!albumIds.includes(songDetail.album.id)) {
