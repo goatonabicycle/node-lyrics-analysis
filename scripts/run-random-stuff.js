@@ -1,4 +1,4 @@
-const { getSongInfo } = require("./src/server/lib/songs.js");
+const { getSongInfo } = require("../src/server/lib/songs.js");
 
 async function test() {
   let result = await getSongInfo(16775);

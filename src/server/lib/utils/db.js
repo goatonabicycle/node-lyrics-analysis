@@ -61,16 +61,16 @@ function createTables() {
 // // ARTISTS
 
 function saveArtist(name) {
-  // return new Promise((resolve, reject) => {
-  //   db.run("INSERT INTO artists (name) VALUES (?)", [name], (err) => {
-  //     if (err) {
-  //       console.error(err.message);
-  //       reject(err);
-  //     } else {
-  //       resolve(`Artist ${name} added successfully.`);
-  //     }
-  //   });
-  // });
+  return new Promise((resolve, reject) => {
+    db.run("INSERT INTO artists (name) VALUES (?)", [name], (err) => {
+      if (err) {
+        console.error(err.message);
+        reject(err);
+      } else {
+        resolve(`Artist ${name} added successfully.`);
+      }
+    });
+  });
 }
 
 // function getArtists() {

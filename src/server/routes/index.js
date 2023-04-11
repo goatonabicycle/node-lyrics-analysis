@@ -27,7 +27,7 @@ router.get("/test", async function (req, res, next) {
   // Then we get all songs for that artist.
   const songsForArtist = await getAllSongsForArtist(artistName, artistId);
   // TODO: Store this song in the database linked to this artist.
-
+  console.log(songsForArtist);
   const albumIds = [];
 
   let limitTo = 5;
@@ -37,7 +37,7 @@ router.get("/test", async function (req, res, next) {
     if (currentItem == limitTo) break;
 
     // Then we get all the information relating to that song.
-    const songDetail = await getSongInfo(song.songId);
+    const songDetail = await getSongInfo(song.id);
 
     if (!songDetail.album) break; // Let's worry about songs without an album later.
 
