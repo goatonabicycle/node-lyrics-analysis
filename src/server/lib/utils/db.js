@@ -1,16 +1,16 @@
 const sqlite3 = require("sqlite3").verbose();
 
-const DBSOURCE = "mydatabase.sqlite";
+const DBSOURCE = "data/lyrics-data.sqlite";
 
-// let db = new sqlite3.Database(DBSOURCE, (err) => {
-//   if (err) {
-//     console.error(err.message);
-//     throw err;
-//   } else {
-//     console.log("Connected to the SQLite database.");
-//     createTables();
-//   }
-// });
+let db = new sqlite3.Database(DBSOURCE, (err) => {
+  if (err) {
+    console.error(err.message);
+    throw err;
+  } else {
+    console.log("Connected to the SQLite database.");
+    createTables();
+  }
+});
 
 // // Create tables if they don't already exist
 function createTables() {
@@ -60,31 +60,38 @@ function createTables() {
 
 // // ARTISTS
 
-function saveArtist(name) {
+async function saveArtist(name, genius_id) {
+  try {
+    await db.run("INSERT INTO artists (name, genius_id) VALUES (?, ?)", [
+      name,
+      genius_id,
+    ]);
+    return `Artist ${name} saved to database successfully.`;
+  } catch (err) {
+    console.error(err.message);
+    throw err;
+  }
+}
+
+async function getArtists(name) {
   return new Promise((resolve, reject) => {
-    db.run("INSERT INTO artists (name) VALUES (?)", [name], (err) => {
+    let query = "SELECT * FROM artists";
+    let params = [];
+
+    if (name) {
+      query += " WHERE name LIKE ?";
+      params.push(`%${name.trim()}%`);
+    }
+
+    db.get(query, params, (err, rows) => {
       if (err) {
-        console.error(err.message);
-        reject(err);
-      } else {
-        resolve(`Artist ${name} added successfully.`);
+        reject(err.message);
+        throw err;
       }
+      resolve(rows);
     });
   });
 }
-
-// function getArtists() {
-//   return new Promise((resolve, reject) => {
-//     db.all("SELECT * FROM artists", [], (err, rows) => {
-//       if (err) {
-//         console.error(err.message);
-//         reject(err);
-//       } else {
-//         resolve(rows);
-//       }
-//     });
-//   });
-// }
 
 // // SONGS
 
@@ -152,7 +159,7 @@ function saveArtist(name) {
 
 module.exports = {
   saveArtist,
-  //   getArtists,
+  getArtists,
   //   saveSong,
   //   getSongs,
   //   saveAlbum,

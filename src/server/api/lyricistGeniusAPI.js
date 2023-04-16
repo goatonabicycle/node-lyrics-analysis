@@ -21,6 +21,7 @@ module.exports = class GeniusAPI {
       Authorization: `Bearer ${this.accessToken}`,
     };
 
+    console.log("Calling Genius API... -> ", url);
     // Fetch result and parse it as JSON
     const body = await fetch(url, {
       headers,
@@ -125,7 +126,7 @@ module.exports = class GeniusAPI {
   async artistByName(name, opts) {
     const slug = this._geniusSlug(name);
     const id = await this._scrapeArtistPageForArtistID(slug);
-    return this.artist(id, opts);
+    return await this.artist(id, opts);
   }
 
   /* Get artist songs */

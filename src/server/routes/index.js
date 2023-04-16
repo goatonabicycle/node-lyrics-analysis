@@ -21,36 +21,39 @@ router.get("/", async function (req, res, next) {
 router.get("/test", async function (req, res, next) {
   // We start with artist stuff.
   const artistName = "Aesop Rock";
-  const artistId = getArtistByName(artistName);
+  const artist = await getArtistByName(artistName);
+
+  console.log(`${artistName} maps to ${artist.genius_id}`);
+
   // TODO: Store this artist in the database.
 
   // Then we get all songs for that artist.
-  const songsForArtist = await getAllSongsForArtist(artistName, artistId);
+  // const songsForArtist = await getAllSongsForArtist(artistName, artist.id);
   // TODO: Store this song in the database linked to this artist.
-  console.log(songsForArtist);
-  const albumIds = [];
+  // console.log(songsForArtist);
+  // const albumIds = [];
 
-  let limitTo = 5;
-  let currentItem = 0;
-  // for each song in songsForArtist we need to first make a "Song details" call.
-  for (const song of songsForArtist.songData) {
-    if (currentItem == limitTo) break;
+  // let limitTo = 5;
+  // let currentItem = 0;
+  // // for each song in songsForArtist we need to first make a "Song details" call.
+  // for (const song of songsForArtist.songData) {
+  //   if (currentItem == limitTo) break;
 
-    // Then we get all the information relating to that song.
-    const songDetail = await getSongInfo(song.id);
+  //   // Then we get all the information relating to that song.
+  //   const songDetail = await getSongInfo(song.id);
 
-    if (!songDetail.album) break; // Let's worry about songs without an album later.
+  //   if (!songDetail.album) break; // Let's worry about songs without an album later.
 
-    // if the songDetail has an albumId we haven't already seen, add it to the albumIds array
-    if (!albumIds.includes(songDetail.album.id)) {
-      console.log(`Album getting added: ${songDetail.album.id}`);
-      albumIds.push(songDetail.album.id);
-    }
+  //   // if the songDetail has an albumId we haven't already seen, add it to the albumIds array
+  //   if (!albumIds.includes(songDetail.album.id)) {
+  //     console.log(`Album getting added: ${songDetail.album.id}`);
+  //     albumIds.push(songDetail.album.id);
+  //   }
 
-    currentItem++;
-  }
+  //   currentItem++;
+  // }
 
-  console.log(albumIds);
+  // console.log(albumIds);
 
   // const songsForArtist = await geniusAPI.songsByArtist(artistId);
 
