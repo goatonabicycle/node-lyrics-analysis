@@ -28,7 +28,8 @@ router.get("/test", async function (req, res, next) {
   // TODO: Store this artist in the database.
 
   // Then we get all songs for that artist.
-  // const songsForArtist = await getAllSongsForArtist(artistName, artist.id);
+  const songsForArtist = await getAllSongsForArtist(artistName, artist.id);
+  console.log({ songsForArtist });
   // TODO: Store this song in the database linked to this artist.
   // console.log(songsForArtist);
   // const albumIds = [];

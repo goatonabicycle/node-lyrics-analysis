@@ -16,8 +16,9 @@ let db = new sqlite3.Database(DBSOURCE, (err) => {
 function createTables() {
   db.run(
     `CREATE TABLE IF NOT EXISTS artists (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL
+      id INTEGER PRIMARY KEY AUTOINCREMENT, 
+      name TEXT NOT NULL, 
+      genius_id INTEGER UNIQUE)
   )`,
     (err) => {
       if (err) {
@@ -95,7 +96,7 @@ async function getArtists(name) {
 
 // // SONGS
 
-// function saveSong(title, lyrics, artist_id) {
+// function saveSong(title, lyrics, artist_id, album_id) {
 //   return new Promise((resolve, reject) => {
 //     db.run(
 //       "INSERT INTO songs (title, lyrics, artist_id) VALUES (?, ?, ?)",

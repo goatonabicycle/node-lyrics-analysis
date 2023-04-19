@@ -1,4 +1,4 @@
-const { readFile, writeFile } = require("./utils/files");
+const db = require("../lib/utils/db");
 const GeniusAPI = require("../api/lyricistGeniusAPI");
 
 const geniusAPI = new GeniusAPI();
@@ -8,17 +8,22 @@ async function getAllSongsForArtist(artistName, artistId) {
   if (!artistName) return;
   if (!artistId) return;
 
-  // Todo: Maybe this could be done in a more elegant way. SQLite?
-  const dataAvailable = await readFile(`data/${artistName}/~songs.json`);
-  if (dataAvailable) {
-    const songsForArtist = JSON.parse(dataAvailable);
-    return songsForArtist;
+  // Get info from the database
+  let songs = await db.getSongsByArtist(artistId);
+  console.log("Songs from database: ", artist);
+
+  // If the artist is not in the database, get it from Genius
+  if (!songs) {
+    const songsForArtist = await geniusAPI.songsByArtist(artistId);
+    if (songsForArtist.length > 0)
+      await db.saveSongs(artist.id, songsForArtist);
   }
 
-  const songsForArtist = await geniusAPI.songsByArtist(artistId);
-  // Save the info to the db here.
+  // return { name: artistName, genius_id: artist.genius_id || artist.id };
 
-  return songsForArtist;
+  // ---------------------------------------
+
+  return songs;
 }
 
 async function getAlbumsFromSongs(songs) {
