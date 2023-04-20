@@ -18,7 +18,7 @@ function createTables() {
     `CREATE TABLE IF NOT EXISTS artists (
       id INTEGER PRIMARY KEY AUTOINCREMENT, 
       name TEXT NOT NULL, 
-      genius_id INTEGER UNIQUE)
+      genius_id INTEGER UNIQUE
   )`,
     (err) => {
       if (err) {

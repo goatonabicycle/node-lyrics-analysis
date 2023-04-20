@@ -14,7 +14,8 @@ async function getAllSongsForArtist(artistName, artistId) {
 
   // If the artist is not in the database, get it from Genius
   if (!songs) {
-    const songsForArtist = await geniusAPI.songsByArtist(artistId);
+    // const songsForArtist = await geniusAPI.songsByArtist(artistId);
+    const songsForArtist = [];
     if (songsForArtist.length > 0)
       await db.saveSongs(artist.id, songsForArtist);
   }

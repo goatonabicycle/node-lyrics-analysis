@@ -16,7 +16,8 @@ function createTables() {
   db.run(
     `CREATE TABLE IF NOT EXISTS artists (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL
+      name TEXT NOT NULL, 
+      genius_id INTEGER UNIQUE
     )`,
     (err) => {
       if (err) {
