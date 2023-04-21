@@ -33,6 +33,7 @@ function createTables() {
      lyrics TEXT NOT NULL,
      artist_id INTEGER NOT NULL,
      album_id INTEGER NOT NULL,
+     complete INTEGER NOT NULL,
      FOREIGN KEY (artist_id) REFERENCES artists(id)
      FOREIGN KEY (album_id) REFERENCES albums(id)
    )`,
