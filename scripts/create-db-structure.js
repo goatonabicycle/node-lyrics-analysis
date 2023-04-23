@@ -30,9 +30,9 @@ function createTables() {
     `CREATE TABLE IF NOT EXISTS songs (
      id INTEGER PRIMARY KEY AUTOINCREMENT,
      title TEXT NOT NULL,
-     lyrics TEXT NOT NULL,
+     lyrics TEXT NULL,
      artist_id INTEGER NOT NULL,
-     album_id INTEGER NOT NULL,
+     album_id INTEGER NULL,
      complete INTEGER NOT NULL,
      FOREIGN KEY (artist_id) REFERENCES artists(id)
      FOREIGN KEY (album_id) REFERENCES albums(id)

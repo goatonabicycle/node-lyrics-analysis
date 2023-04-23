@@ -101,9 +101,11 @@ async function getSongsByArtist(artist_id) {
 }
 
 function saveSong(song) {
+  console.log("saveSong");
+  console.log({ song });
   return new Promise((resolve, reject) => {
     db.run(
-      "INSERT INTO songs (title, lyrics, artist_id, album_id, complete) VALUES (?, ?, ?)",
+      "INSERT INTO songs (title, lyrics, artist_id, album_id, complete) VALUES (?, ?, ?, ?, ?)",
       [song.title, song.lyrics, song.artist_id, song.album_id, song.complete],
       (err) => {
         if (err) {

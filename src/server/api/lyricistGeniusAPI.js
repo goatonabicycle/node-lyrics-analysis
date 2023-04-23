@@ -131,7 +131,10 @@ module.exports = class GeniusAPI {
 
   /* Get artist songs */
 
-  async songsByArtist(id, { page = 1, perPage = 20, sort = "title" } = {}) {
+  async songReferencesByArtist(
+    id,
+    { page = 1, perPage = 20, sort = "title" } = {}
+  ) {
     if (!id) throw new Error("No ID was provided to lyricist.songsByArtist()");
 
     let allSongs = [];
@@ -146,7 +149,6 @@ module.exports = class GeniusAPI {
       if (songs.length === 0) {
         break; // no more songs, exit the loop
       }
-
       allSongs = allSongs.concat(
         songs.map((song) => ({
           id: song.id,
