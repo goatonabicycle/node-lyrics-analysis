@@ -133,7 +133,7 @@ module.exports = class GeniusAPI {
 
   async songReferencesByArtist(
     id,
-    { page = 1, perPage = 20, sort = "title" } = {}
+    { page = 1, perPage = 50, sort = "title" } = {}
   ) {
     if (!id) throw new Error("No ID was provided to lyricist.songsByArtist()");
 

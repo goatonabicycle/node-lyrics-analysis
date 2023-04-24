@@ -97,6 +97,24 @@ async function getArtists(name) {
 // // SONGS
 
 async function getSongsByArtist(artist_id) {
+  return new Promise((resolve, reject) => {
+    let query = "SELECT * FROM songs";
+    let params = [];
+
+    if (artist_id) {
+      query += " WHERE artist_id = ?";
+      params.push(`${artist_id}`);
+    }
+
+    db.all(query, params, (err, rows) => {
+      if (err) {
+        reject(err.message);
+        throw err;
+      }
+      resolve(rows);
+    });
+  });
+
   return [];
 }
 
