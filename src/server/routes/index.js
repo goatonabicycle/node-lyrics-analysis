@@ -33,6 +33,7 @@ router.get("/test", async function (req, res, next) {
     artist.genius_id
   );
   console.log({ songsForArtist });
+
   // TODO: Store this song in the database linked to this artist.
   // console.log(songsForArtist);
   // const albumIds = [];

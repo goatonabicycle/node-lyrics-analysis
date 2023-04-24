@@ -25,6 +25,7 @@ async function getAllSongsForArtist(artistName, artistId) {
     song.complete = 0;
     song.lyrics = "";
     song.album_id = 0;
+    song.artist_id = artistId;
     await db.saveSong(song);
   }
 

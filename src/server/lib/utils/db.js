@@ -112,7 +112,7 @@ function saveSong(song) {
           console.error(err.message);
           reject(err);
         } else {
-          resolve(`Song ${title} added successfully.`);
+          resolve(`Song added successfully.`);
         }
       }
     );
