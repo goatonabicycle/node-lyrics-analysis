@@ -151,7 +151,7 @@ module.exports = class GeniusAPI {
       }
       allSongs = allSongs.concat(
         songs.map((song) => ({
-          id: song.id,
+          genius_id: song.id,
           title: song.title,
         }))
       );
@@ -162,6 +162,11 @@ module.exports = class GeniusAPI {
 
       currentPage++;
       numPages++;
+
+      console.log("allSongs", allSongs);
+      console.log("songs.length", songs.length);
+      console.log("numPages", numPages);
+      console.log("currentPage", currentPage);
     }
 
     return allSongs;

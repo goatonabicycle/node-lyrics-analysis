@@ -123,8 +123,15 @@ function saveSong(song) {
   console.log({ song });
   return new Promise((resolve, reject) => {
     db.run(
-      "INSERT INTO songs (title, lyrics, artist_id, album_id, complete) VALUES (?, ?, ?, ?, ?)",
-      [song.title, song.lyrics, song.artist_id, song.album_id, song.complete],
+      "INSERT INTO songs (genius_id, artist_id, album_id, title, lyrics, complete) VALUES (?, ?, ?, ?, ?, ?)",
+      [
+        song.genius_id,
+        song.artist_id,
+        song.album_id,
+        song.title,
+        song.lyrics,
+        song.complete,
+      ],
       (err) => {
         if (err) {
           console.error(err.message);
