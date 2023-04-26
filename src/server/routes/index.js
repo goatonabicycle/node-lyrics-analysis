@@ -11,6 +11,7 @@ const geniusAPI = new GeniusAPI();
 const { getAllSongsForArtist, getSongInfo } = require("../lib/songs");
 const { getAlbumData } = require("../lib/albums");
 const { getArtistByName } = require("../lib/artist");
+const db = require("../lib/utils/db");
 
 /* GET home page. */
 router.get("/", async function (req, res, next) {
@@ -34,24 +35,26 @@ router.get("/test", async function (req, res, next) {
   );
 
   // Get the first ten items from songsForArtist
-  const firstTenSongs = songsForArtist.slice(0, 10);
+  const firstFew = songsForArtist.slice(0, 10);
 
   // songsForArtist = songsForArtist
 
   //Using all of these songs, get their details using the Genius API.
   const songData = await Promise.all(
-    firstTenSongs.map(async (song) => {
+    firstFew.map(async (song) => {
       const songDetail = await getSongInfo(song.genius_id);
       // Save each individual song to the database
-      for (let i = 0; i < songsForArtist.length; i++) {
-        let song = songsForArtist[i];
-        song.complete = 0;
-        song.lyrics = "";
-        song.album_id = 0;
-        song.artist_id = artistId;
-        await db.saveSong(song);
-      }
-      return songDetail;
+
+      let thisSong = songDetail;
+      console.log({ thisSong });
+      thisSong.complete = 1;
+      thisSong.lyrics = thisSong.lyrics;
+      thisSong.genius_id = thisSong.id;
+      thisSong.album_id = thisSong.album?.id;
+      thisSong.artist_id = artist.genius_id;
+      await db.saveSong(thisSong);
+
+      return thisSong;
     })
   );
 

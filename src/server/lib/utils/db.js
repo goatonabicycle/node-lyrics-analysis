@@ -144,18 +144,18 @@ function saveSong(song) {
   });
 }
 
-// function getSongs() {
-//   return new Promise((resolve, reject) => {
-//     db.all("SELECT * FROM songs", [], (err, rows) => {
-//       if (err) {
-//         console.error(err.message);
-//         reject(err);
-//       } else {
-//         resolve(rows);
-//       }
-//     });
-//   });
-// }
+function getSong(id) {
+  return new Promise((resolve, reject) => {
+    db.all("SELECT * FROM songs WHERE genius_id = ?", [id], (err, rows) => {
+      if (err) {
+        console.error(err.message);
+        reject(err);
+      } else {
+        resolve(rows);
+      }
+    });
+  });
+}
 
 // // ALBUMS
 

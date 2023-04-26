@@ -10,12 +10,12 @@ async function getAllSongsForArtist(artistName, artistId) {
 
   console.log("Getting songs for artist: ", artistName);
   // Get info from the database
-  let songs = await db.getSongsByArtist(artistId);
 
-  if (songs && songs.length > 0) return songs;
+  // let songs = await db.getSongsByArtist(artistId);
+  // if (songs && songs.length > 0) return songs;
 
   // If the artist is not in the database, get it from Genius
-  songsForArtist = await geniusAPI.songReferencesByArtist(artistId);
+  let songsForArtist = await geniusAPI.songReferencesByArtist(artistId);
 
   return songsForArtist;
 }
@@ -28,7 +28,7 @@ function saveSong(songData) {}
 
 async function getSongInfo(songId) {
   // TODO: See if song info is available in the db.
-  const songInformation = await geniusAPI.song(songId);
+  const songInformation = await geniusAPI.song(songId, { fetchLyrics: true });
   return songInformation;
 }
 
