@@ -5,7 +5,6 @@ const geniusAPI = new GeniusAPI();
 
 async function getArtistByName(artistName) {
   let artist = await db.getArtists(artistName);
-  console.log("Artist from database: ", artist);
 
   // If the artist is not in the database, get it from Genius
   if (!artist) {
@@ -13,7 +12,10 @@ async function getArtistByName(artistName) {
     if (artist.id) await db.saveArtist(artist.name, artist.id);
   }
 
-  return { name: artistName, genius_id: artist.genius_id || artist.id };
+  return {
+    name: artist.name || artistName,
+    genius_id: artist.genius_id || artist.id,
+  };
 }
 
 module.exports = {

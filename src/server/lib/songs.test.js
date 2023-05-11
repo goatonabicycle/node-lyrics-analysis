@@ -15,20 +15,24 @@ describe("songs", () => {
       fetch.resetMocks();
     });
 
+    afterEach(() => {
+      fetch.resetMocks();
+    });
+
     test("Not providing info returns nothing", async () => {
       const result = await getAllSongsForArtist();
       expect(result).toBe(undefined);
     });
 
-    test("When there are more than 20 songs, we get songs from the next page.", async () => {
+    test("When there are more than 50 songs, we get songs from the next page.", async () => {
       let songData = [];
 
-      for (let i = 1; i <= 35; i++) {
+      for (let i = 1; i <= 55; i++) {
         songData.push({ id: i, title: `Song ${i}` });
       }
 
-      const songSet1 = songData.slice(0, 20);
-      const songSet2 = songData.slice(20);
+      const songSet1 = songData.slice(0, 50);
+      const songSet2 = songData.slice(50);
 
       let mockedData1 = createAMockedResponseStructure({
         songs: songSet1,
@@ -46,44 +50,47 @@ describe("songs", () => {
       const artistName = "This is Mocked so it's cool!";
       const result = await getAllSongsForArtist(artistName, artistId);
 
-      expect(result.songData.length).toBeGreaterThan(0);
-      expect(result.songData[0].title).toBe("Song 1");
-      expect(result.songData[30].title).toBe("Song 31");
-    });
-  });
-
-  test("A mocked endpoint returns an array of songs", async () => {
-    let testData = createAMockedResponseStructure({
-      songs: [
-        { id: 1, title: "Song 1" },
-        { id: 2, title: "Song 2" },
-      ],
+      expect(result.length).toBeGreaterThan(0);
+      expect(result[0].title).toBe("Song 1");
+      expect(result[30].title).toBe("Song 31");
     });
 
-    fetch.mockResponseOnce(testData);
+    test("A mocked endpoint returns an array of songs", async () => {
+      let testData = createAMockedResponseStructure({
+        songs: [
+          { id: 1, title: "Song 1" },
+          { id: 2, title: "Song 2" },
+        ],
+      });
 
-    const artistId = 111;
-    const artistName = "This is Mocked so it's cool!";
-    const result = await getAllSongsForArtist(artistName, artistId);
+      fetch.mockResponseOnce(testData);
 
-    expect(result.songData.length).toBeGreaterThan(0);
-    expect(result.songData[0].id).toBe(1);
-    expect(result.songData[1].title).toBe("Song 2");
+      const artistId = 111;
+      const artistName = "This is Mocked so it's cool!";
+      const result = await getAllSongsForArtist(artistName, artistId);
+
+      expect(result.length).toBeGreaterThan(0);
+      expect(result[0].genius_id).toBe(1);
+      expect(result[1].title).toBe("Song 2");
+    });
   });
 
   describe("getSongById", () => {
     beforeEach(() => {
       fetch.resetMocks();
     });
-
     test("Not providing info returns nothing", async () => {});
 
     test("Song details are accessible", async () => {
       let songId = 99999;
       let albumId = 88888;
-
       let testData = createAMockedResponseStructure({
-        song: { id: songId, title: "Song 1", album: { id: albumId } },
+        song: {
+          id: songId,
+          url: "Some url",
+          title: "Song 1",
+          album: { id: albumId },
+        },
       });
 
       fetch.mockResponse(testData);

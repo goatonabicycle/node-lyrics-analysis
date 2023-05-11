@@ -1,4 +1,7 @@
 const { getArtistByName } = require("./artist");
+const { getArtists, saveArtist } = require("../lib/utils/db");
+
+jest.mock("../lib/utils/db");
 
 // Todo: Consider moving this somewhere common.
 function createAMockedResponseStructure(responseData) {
@@ -11,7 +14,18 @@ function createAMockedResponseStructure(responseData) {
 }
 
 describe("Artists", () => {
-  test("get an artist's id from their name", async () => {
+  test("get an artist's id from their name when I have it in the database", async () => {
+    // Let's pretend that the artist exists in the database.
+    getArtists.mockResolvedValue({ id: 178, name: "Aesop rock" });
+
+    const artist = await getArtistByName("Aesop rock");
+
+    expect(artist.name).toBe("Aesop rock");
+    expect(artist.genius_id).toBe(178);
+  });
+
+  test("get an artist's id from their name when I don't have it in the database", async () => {
+    // This is a recreation of the important block of code when scraping this.
     let testData = `<html><meta name="newrelic-resource-path" content="/artists/178"></meta><html/>`;
 
     let artistTestData = createAMockedResponseStructure({
@@ -20,7 +34,11 @@ describe("Artists", () => {
 
     fetch.mockResponses(testData, artistTestData);
 
+    // Simulate the situation where the artist doesn't exist in the database.
+    getArtists.mockResolvedValue(undefined);
+    saveArtist.mockResolvedValue(undefined);
+
     const artist = await getArtistByName("Aesop rock");
-    expect(artist.id).toBe(178);
+    expect(artist.genius_id).toBe(178);
   });
 });

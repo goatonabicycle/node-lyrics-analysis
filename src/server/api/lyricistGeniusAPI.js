@@ -162,11 +162,6 @@ module.exports = class GeniusAPI {
 
       currentPage++;
       numPages++;
-
-      console.log("allSongs", allSongs);
-      console.log("songs.length", songs.length);
-      console.log("numPages", numPages);
-      console.log("currentPage", currentPage);
     }
 
     return allSongs;

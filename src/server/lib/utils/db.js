@@ -2,15 +2,18 @@ const sqlite3 = require("sqlite3").verbose();
 
 const DBSOURCE = "data/lyrics-data.sqlite";
 
-let db = new sqlite3.Database(DBSOURCE, (err) => {
-  if (err) {
-    console.error(err.message);
-    throw err;
-  } else {
-    console.log("Connected to the SQLite database.");
-    createTables();
-  }
-});
+let db;
+
+function connect() {
+  db = new sqlite3.Database(DBSOURCE, (err) => {
+    if (err) {
+      console.error(err.message);
+      throw err;
+    } else {
+      console.log("Connected to the SQLite database.");
+    }
+  });
+}
 
 // // Create tables if they don't already exist
 function createTables() {
@@ -63,6 +66,7 @@ function createTables() {
 
 async function saveArtist(name, genius_id) {
   try {
+    connect();
     await db.run("INSERT INTO artists (name, genius_id) VALUES (?, ?)", [
       name,
       genius_id,
@@ -75,6 +79,7 @@ async function saveArtist(name, genius_id) {
 }
 
 async function getArtists(name) {
+  connect();
   return new Promise((resolve, reject) => {
     let query = "SELECT * FROM artists";
     let params = [];
@@ -97,6 +102,7 @@ async function getArtists(name) {
 // // SONGS
 
 async function getSongsByArtist(artist_id) {
+  connect();
   return new Promise((resolve, reject) => {
     let query = "SELECT * FROM songs";
     let params = [];
@@ -119,6 +125,7 @@ async function getSongsByArtist(artist_id) {
 }
 
 function saveSong(song) {
+  connect();
   console.log("saveSong");
   console.log({ song });
   return new Promise((resolve, reject) => {
@@ -145,6 +152,7 @@ function saveSong(song) {
 }
 
 function getSong(id) {
+  connect();
   return new Promise((resolve, reject) => {
     db.all("SELECT * FROM songs WHERE genius_id = ?", [id], (err, rows) => {
       if (err) {
