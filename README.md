@@ -1,6 +1,8 @@
 # node-lyrics-analysis
 
-Trying to find silly meaning in a mountain of words
+[![Test](https://github.com/goatonabicycle/node-lyrics-analysis/actions/workflows/node.js.yml/badge.svg)](https://github.com/goatonabicycle/node-lyrics-analysis/actions/workflows/node.js.yml)
+
+Trying to find silly meaning in a mountain of words.
 
 ## What is this even?
 
