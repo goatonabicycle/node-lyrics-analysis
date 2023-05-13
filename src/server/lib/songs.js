@@ -30,8 +30,17 @@ async function getSongInfo(songId) {
   console.log("song from db: ", song);
   if (song.id) return song;
 
-  // TODO: See if song info is available in the db.
   const songInformation = await geniusAPI.song(songId, { fetchLyrics: true });
+
+  // TODO: standardize what this function returns. JSDOC?
+  let returnStructure = {
+    genius_id: songInformation.id,
+    title: songInformation.title,
+    artist: songInformation.artist,
+    album: songInformation.album,
+    lyrics: songInformation.lyrics,
+  };
+
   return songInformation;
 }
 

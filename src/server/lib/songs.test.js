@@ -1,4 +1,7 @@
 const { getAllSongsForArtist, getSongInfo } = require("./songs");
+const { getSong } = require("../lib/utils/db");
+
+jest.mock("../lib/utils/db");
 
 function createAMockedResponseStructure(responseData) {
   let mockedData = JSON.stringify({
@@ -84,6 +87,8 @@ describe("songs", () => {
     test("Song details are accessible", async () => {
       let songId = 99999;
       let albumId = 88888;
+
+      // If this comes from the API.
       let testData = createAMockedResponseStructure({
         song: {
           id: songId,
@@ -92,13 +97,21 @@ describe("songs", () => {
           album: { id: albumId },
         },
       });
-
       fetch.mockResponse(testData);
+
+      // If this comes from the DB.
+      getSong.mockResolvedValue({
+        id: songId,
+        genius_id: 5,
+        albumId,
+        artistId: 555,
+        lyrics: "Some lyrics",
+      });
 
       let songInfo = await getSongInfo(songId);
 
       expect(songInfo.id).toBe(songId);
-      expect(songInfo.album.id).toBe(albumId);
+      expect(songInfo.albumId).toBe(albumId);
     });
 
     test("Song lyrics are accessible", async () => {});

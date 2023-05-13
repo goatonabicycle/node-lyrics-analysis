@@ -15,89 +15,44 @@ function connect() {
   });
 }
 
-// // Create tables if they don't already exist
-function createTables() {
-  db.run(
-    `CREATE TABLE IF NOT EXISTS artists (
-      id INTEGER PRIMARY KEY AUTOINCREMENT, 
-      name TEXT NOT NULL, 
-      genius_id INTEGER UNIQUE
-  )`,
-    (err) => {
-      if (err) {
-        console.error(err.message);
-      }
+const artists = {
+  async saveArtist(name, genius_id) {
+    try {
+      connect();
+      await db.run("INSERT INTO artists (name, genius_id) VALUES (?, ?)", [
+        name,
+        genius_id,
+      ]);
+      return `Artist ${name} saved to database successfully.`;
+    } catch (err) {
+      console.error(err.message);
+      throw err;
     }
-  );
+  },
 
-  //   db.run(
-  //     `CREATE TABLE IF NOT EXISTS songs (
-  //     id INTEGER PRIMARY KEY AUTOINCREMENT,
-  //     title TEXT NOT NULL,
-  //     lyrics TEXT NOT NULL,
-  //     artist_id INTEGER NOT NULL,
-  //     FOREIGN KEY (artist_id) REFERENCES artists(id)
-  //   )`,
-  //     (err) => {
-  //       if (err) {
-  //         console.error(err.message);
-  //         throw err;
-  //       }
-  //     }
-  //   );
+  async getArtists(name) {
+    connect();
+    return new Promise((resolve, reject) => {
+      let query = "SELECT * FROM artists";
+      let params = [];
 
-  //   db.run(
-  //     `CREATE TABLE IF NOT EXISTS albums (
-  //     id INTEGER PRIMARY KEY AUTOINCREMENT,
-  //     title TEXT NOT NULL,
-  //     artist_id INTEGER NOT NULL,
-  //     FOREIGN KEY (artist_id) REFERENCES artists(id)
-  //   )`,
-  //     (err) => {
-  //       if (err) {
-  //         console.error(err.message);
-  //         throw err;
-  //       }
-  //     }
-  //   );
-}
+      if (name) {
+        query += " WHERE name LIKE ?";
+        params.push(`%${name.trim()}%`);
+      }
+
+      db.get(query, params, (err, rows) => {
+        if (err) {
+          reject(err.message);
+          throw err;
+        }
+        resolve(rows);
+      });
+    });
+  },
+};
 
 // // ARTISTS
-
-async function saveArtist(name, genius_id) {
-  try {
-    connect();
-    await db.run("INSERT INTO artists (name, genius_id) VALUES (?, ?)", [
-      name,
-      genius_id,
-    ]);
-    return `Artist ${name} saved to database successfully.`;
-  } catch (err) {
-    console.error(err.message);
-    throw err;
-  }
-}
-
-async function getArtists(name) {
-  connect();
-  return new Promise((resolve, reject) => {
-    let query = "SELECT * FROM artists";
-    let params = [];
-
-    if (name) {
-      query += " WHERE name LIKE ?";
-      params.push(`%${name.trim()}%`);
-    }
-
-    db.get(query, params, (err, rows) => {
-      if (err) {
-        reject(err.message);
-        throw err;
-      }
-      resolve(rows);
-    });
-  });
-}
 
 // // SONGS
 
@@ -165,45 +120,9 @@ function getSong(id) {
   });
 }
 
-// // ALBUMS
-
-// function saveAlbum(title, artist_id) {
-//   return new Promise((resolve, reject) => {
-//     db.run(
-//       "INSERT INTO albums (title, artist_id) VALUES (?, ?)",
-//       [title, artist_id],
-//       (err) => {
-//         if (err) {
-//           console.error(err.message);
-//           reject(err);
-//         } else {
-//           resolve(`Album ${title} added successfully.`);
-//         }
-//       }
-//     );
-//   });
-// }
-
-// function getAlbums() {
-//   return new Promise((resolve, reject) => {
-//     db.all("SELECT * FROM albums", [], (err) => {
-//       if (err) {
-//         console.error(err.message);
-//         reject(err);
-//       } else {
-//         resolve(rows);
-//       }
-//     });
-//   });
-// }
-
 module.exports = {
-  saveArtist,
-  getArtists,
+  artists,
   getSongsByArtist,
   saveSong,
   getSong,
-  //   getSongs,
-  //   saveAlbum,
-  //   getAlbums,
 };

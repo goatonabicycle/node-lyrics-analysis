@@ -4,12 +4,12 @@ const GeniusAPI = require("../api/lyricistGeniusAPI");
 const geniusAPI = new GeniusAPI();
 
 async function getArtistByName(artistName) {
-  let artist = await db.getArtists(artistName);
+  let artist = await db.artists.getArtists(artistName);
 
   // If the artist is not in the database, get it from Genius
   if (!artist) {
     artist = await geniusAPI.artistByName(artistName);
-    if (artist.id) await db.saveArtist(artist.name, artist.id);
+    if (artist.id) await db.artists.saveArtist(artist.name, artist.id);
   }
 
   return {
