@@ -1,6 +1,6 @@
 # node-lyrics-analysis
 
-[![Test](https://github.com/goatonabicycle/node-lyrics-analysis/actions/workflows/node.js.yml/badge.svg)](https://github.com/goatonabicycle/node-lyrics-analysis/actions/workflows/node.js.yml)
+[![Tests are: ](https://github.com/goatonabicycle/node-lyrics-analysis/actions/workflows/node.js.yml/badge.svg)](https://github.com/goatonabicycle/node-lyrics-analysis/actions/workflows/node.js.yml)
 
 Trying to find silly meaning in a mountain of words.
 

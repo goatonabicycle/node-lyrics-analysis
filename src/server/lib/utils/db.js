@@ -10,7 +10,7 @@ function connect() {
       console.error(err.message);
       throw err;
     } else {
-      console.log("Connected to the SQLite database.");
+      //console.log("Connected to the SQLite database.");
     }
   });
 }
@@ -202,6 +202,7 @@ module.exports = {
   getArtists,
   getSongsByArtist,
   saveSong,
+  getSong,
   //   getSongs,
   //   saveAlbum,
   //   getAlbums,

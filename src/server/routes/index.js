@@ -46,7 +46,6 @@ router.get("/test", async function (req, res, next) {
       // Save each individual song to the database
 
       let thisSong = songDetail;
-      console.log({ thisSong });
       thisSong.complete = 1;
       thisSong.lyrics = thisSong.lyrics;
       thisSong.genius_id = thisSong.id;
@@ -58,7 +57,7 @@ router.get("/test", async function (req, res, next) {
     })
   );
 
-  console.log({ songData });
+  // console.log({ songData });
 
   // // get all the unique album_id items inside of the songsForArtist array.
   // const albumIds = [];
@@ -120,7 +119,9 @@ router.get("/test", async function (req, res, next) {
   //   exclusions: 590,
   //   songResults: albumData,
   // };
-  let result = {};
+  let result = {
+    artistName: "a",
+  };
   res.render("index", result);
 });
 
