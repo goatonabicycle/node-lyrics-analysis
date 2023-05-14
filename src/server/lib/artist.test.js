@@ -1,5 +1,5 @@
 const { getArtistByName } = require("./artist");
-const { getArtists, saveArtist } = require("../lib/utils/db");
+const { artists } = require("../lib/utils/db");
 
 jest.mock("../lib/utils/db");
 
@@ -16,7 +16,7 @@ function createAMockedResponseStructure(responseData) {
 describe("Artists", () => {
   test("get an artist's id from their name when I have it in the database", async () => {
     // Let's pretend that the artist exists in the database.
-    getArtists.mockResolvedValue({ id: 178, name: "Aesop rock" });
+    artists.getArtists.mockResolvedValue({ id: 178, name: "Aesop rock" });
 
     const artist = await getArtistByName("Aesop rock");
 
@@ -35,8 +35,8 @@ describe("Artists", () => {
     fetch.mockResponses(testData, artistTestData);
 
     // Simulate the situation where the artist doesn't exist in the database.
-    getArtists.mockResolvedValue(undefined);
-    saveArtist.mockResolvedValue(undefined);
+    artists.getArtists.mockResolvedValue(undefined);
+    artists.saveArtist.mockResolvedValue(undefined);
 
     const artist = await getArtistByName("Aesop rock");
     expect(artist.genius_id).toBe(178);
