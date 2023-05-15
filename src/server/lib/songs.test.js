@@ -49,10 +49,24 @@ describe("songs", () => {
       // expect(result[30].title).toBe("Song 31");
     });
 
-    test("Mocked data returns an array of songs", async () => {
+    test("Mocked data from a database returns an array of songs", async () => {
       songs.getSongsByArtist.mockResolvedValue([
-        { genius_id: 1, title: "Song 1" },
-        { genius_id: 2, title: "Song 2" },
+        {
+          genius_id: 1,
+          title: "Song 1",
+          artist_id: 1,
+          album_id: null,
+          lyrics: "Helloooo",
+          complete: true,
+        },
+        {
+          genius_id: 2,
+          title: "Song 2",
+          artist_id: 2,
+          album_id: 5,
+          lyrics: "Hey man wow!",
+          complete: false,
+        },
       ]);
 
       const artistId = 111;

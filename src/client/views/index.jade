@@ -11,12 +11,12 @@ html(lang='en')
     link(rel='stylesheet', href='css/style.css')  
     link(rel='icon', type='image/png', href='images/favicon.png')
   body    
-    .container
-      .row
-        .twelve.column(style='margin-top: 5%')
-          h1
-            | Here are some lyrics for: 
-            b #{artistName}
+     .container
+       .row
+         .twelve.column(style='margin-top: 5%')
+           h1
+             | Here are some lyrics for: 
+             b #{artistName}
           p
             | Data and things will go here. The above should be editable and dynamic                      
           p  
@@ -25,13 +25,9 @@ html(lang='en')
             | Number of songs we used: #{songCount}
             br
             | Total number of words: #{totalWords}
-            br
-            | Number of words not used (Exclusions): #{exclusions}
-
-          h3 Album: #{albumName}
-
-          each song in songResults.songsWithLyrics            
-            h3 Song: #{song.trackNumber}. #{song.title}
+          
+          each song in songsForArtist
+            h3 Song: #{song.id}. #{song.title}
             b Lyrics:
             br
             | #{song.lyrics}
@@ -39,8 +35,8 @@ html(lang='en')
             br
             b Word usage map:
             br
-            each word in song.lyricsWordMap                          
-              | [#{word.name}: #{word.total}]   
-            br
-            hr
+            //- each word in song.lyricsWordMap                          
+            //-   | [#{word.name}: #{word.total}]   
+            //- br
+            //- hr
 

@@ -15,7 +15,24 @@ const db = require("../lib/utils/db");
 
 /* GET home page. */
 router.get("/", async function (req, res, next) {
-  let result = {};
+  const artistName = "Aesop Rock";
+  const artist = await getArtistByName(artistName);
+
+  console.log(`${artistName} maps to ${artist.genius_id}`);
+
+  // Then we get all songs for that artist.
+  const songsForArtist = await getAllSongsForArtist(
+    artistName,
+    artist.genius_id
+  );
+
+  let result = {
+    artistName: "Aesop Rock",
+    songsForArtist,
+    albumCount: 3,
+    totalWords: 3000000,
+    songCount: songsForArtist.length,
+  };
   res.render("index", result);
 });
 
