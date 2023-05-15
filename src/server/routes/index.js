@@ -26,40 +26,15 @@ router.get("/test", async function (req, res, next) {
 
   console.log(`${artistName} maps to ${artist.genius_id}`);
 
-  // TODO: Store this artist in the database.
-
   // Then we get all songs for that artist.
   const songsForArtist = await getAllSongsForArtist(
     artistName,
     artist.genius_id
   );
 
-  // Get the first ten items from songsForArtist
-  const firstFew = songsForArtist.slice(0, 10);
+  console.log({ songsForArtist });
 
-  // songsForArtist = songsForArtist
-
-  //Using all of these songs, get their details using the Genius API.
-  const songData = await Promise.all(
-    firstFew.map(async (song) => {
-      const songDetail = await getSongInfo(song.genius_id);
-      // Save each individual song to the database
-
-      let thisSong = songDetail;
-      thisSong.complete = 1;
-      thisSong.lyrics = thisSong.lyrics;
-      thisSong.genius_id = thisSong.id;
-      thisSong.album_id = thisSong.album?.id;
-      thisSong.artist_id = artist.genius_id;
-      await db.saveSong(thisSong);
-
-      return thisSong;
-    })
-  );
-
-  // console.log({ songData });
-
-  // // get all the unique album_id items inside of the songsForArtist array.
+  // get all the unique album_id items inside of the songsForArtist array.
   // const albumIds = [];
   // for (const song of songsForArtist) {
   //   console.log({ song });
