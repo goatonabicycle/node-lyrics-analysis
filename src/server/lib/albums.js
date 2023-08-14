@@ -1,6 +1,6 @@
 function getAllAlbumsForArtist(artistId) {}
 
-async function getAlbumData() {
+async function getAlbumData(albumId) {
   const album = await geniusAPI.album(albumId, {
     fetchTracklist: true,
   });
