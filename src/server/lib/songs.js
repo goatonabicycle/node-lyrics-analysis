@@ -11,7 +11,7 @@ async function getAllSongsForArtist(artistName, artistId) {
   console.log("Getting all DB songs for artist: ", artistName, artistId);
   // Get info from the database
   let songs = await db.songs.getSongsByArtist(artistId);
-  console.log("songs from db: ", songs);
+  // console.log("songs from db: ", songs);
   if (songs && songs.length > 0) return songs;
 
   // // If the artist is not in the database, get it from Genius
@@ -46,6 +46,7 @@ async function getAllSongsForArtist(artistName, artistId) {
 }
 
 async function getAlbumsFromSongs(songs) {
+  console.log({ songs });
   return [];
 }
 

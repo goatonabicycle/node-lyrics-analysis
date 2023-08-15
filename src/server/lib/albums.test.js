@@ -14,6 +14,6 @@ function createAMockedResponseStructure(responseData) {
 }
 
 describe("Albums", () => {
-  // Albums from artist Id.
-  // Album from song id.
+  test("Albums from artist Id.", async () => {});
+  test("Album from song id.", async () => {});
 });

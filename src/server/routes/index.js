@@ -26,6 +26,20 @@ router.get("/", async function (req, res, next) {
     artist.genius_id
   );
 
+  // console.log({ songsForArtist });
+  // get all the unique album_id items inside of the songsForArtist array.
+  const albumIds = [];
+  for (const song of songsForArtist) {
+    // console.log({ song });
+    if (!albumIds.includes(song.album_id)) {
+      albumIds.push(song.album_id);
+    }
+  }
+
+  console.log({ albumIds });
+
+  // const albumsForArtist = await getAlbumData(artist.genius_id);
+
   let result = {
     artistName: "Aesop Rock",
     songsForArtist,
