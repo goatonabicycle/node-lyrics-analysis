@@ -49,6 +49,7 @@ Random ideas.
 - Using that song info, get all the unique albums.
 - Store the song and album information as indexes per artist.
 - Per song, per Album, get the lyrics and the analisys of that song.
+- Perhaps some more specific tools that would enable nlp related things can be done here
 
 Other things:
 
