@@ -5,17 +5,22 @@ const geniusAPI = new GeniusAPI();
 
 // Unfortunately, the Genius API doesn't have a way to get album information without calling a "song detail" endpoint.
 async function getAllSongsForArtist(artistName, artistId) {
+  console.log("calling getAllSongsForArtist", { artistName }, { artistId });
   if (!artistName) return;
   if (!artistId) return;
 
   console.log("Getting all DB songs for artist: ", artistName, artistId);
   // Get info from the database
   let songs = await db.songs.getSongsByArtist(artistId);
-  // console.log("songs from db: ", songs);
+
+  console.log("songs from db: ", songs);
+
   if (songs && songs.length > 0) return songs;
 
   // // If the artist is not in the database, get it from Genius
-  // let songsForArtist = await geniusAPI.songReferencesByArtist(artistId);
+  let songsForArtist = await geniusAPI.songReferencesByArtist(artistId);
+
+  console.log({ songsForArtist });
 
   // // Get the first ten items from songsForArtist
   // const firstFew = songsForArtist.slice(0, 10);
@@ -42,7 +47,7 @@ async function getAllSongsForArtist(artistName, artistId) {
 
   // console.log("SongData: ", songData);
   // todo: once we have this song, we might as well save it to the db?
-  // return songsForArtist;
+  return songsForArtist;
 }
 
 async function getAlbumsFromSongs(songs) {

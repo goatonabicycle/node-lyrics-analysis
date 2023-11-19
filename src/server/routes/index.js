@@ -38,10 +38,11 @@ router.get("/", async function (req, res, next) {
 
   console.log({ albumIds });
 
-  // const albumsForArtist = await getAlbumData(artist.genius_id);
+  const albumsForArtist = await getAlbumData(artist.genius_id);
 
   let result = {
     artistName: "Aesop Rock",
+    albumsForArtist,
     songsForArtist,
     albumCount: 3,
     totalWords: 3000000,

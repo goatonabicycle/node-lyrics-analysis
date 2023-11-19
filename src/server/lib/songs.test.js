@@ -36,6 +36,7 @@ describe("songs", () => {
       let mockedData2 = createAMockedResponseStructure({
         songs: songSet2,
       });
+
       songs.getSong.mockResolvedValue(undefined);
       fetch.mockResponses(
         [mockedData1, { status: 200 }],
@@ -43,6 +44,7 @@ describe("songs", () => {
       );
       const artistId = 111;
       const artistName = "This is Mocked so it's cool!";
+
       const result = await getAllSongsForArtist(artistName, artistId);
       expect(result.length).toBeGreaterThan(0);
       expect(result[0].title).toBe("Song 1");
